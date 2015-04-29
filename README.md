@@ -96,9 +96,6 @@ git clone https://git.openstack.org/openstack-dev/devstack
 ```
 Setup the localrc
 ```bash
-cd devstack
-vi localrc
-
 cat << _EOF_ | sudo tee -a /vagrant/devstack/localrc
 FLOATING_RANGE=192.168.19.0/24
 Q_FLOATING_ALLOCATION_POOL="start=192.168.19.80,end=192.168.19.100"
