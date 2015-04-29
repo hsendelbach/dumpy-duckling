@@ -33,10 +33,9 @@ This project should allow us to spin up OpenStack Magnum on the Mac.
 * Mac OSx
 
 ### Install Vagrant
+Grab the .dmg and install it.
+https://dl.bintray.com/mitchellh/vagrant/vagrant_1.7.2.dmg
 
-```bash
-    add details here.
-```
 ### Spin up Trusty VM
 Clone this repository
 ```bash
