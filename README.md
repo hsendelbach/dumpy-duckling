@@ -138,14 +138,17 @@ _EOF_
 Add local.sh to run at the end of stack.sh
 ```bash
 cat << _EOF_ | sudo tee -a /vagrant/devstack/localrc
-
+sudo ifconfig br-ex 0.0.0.0
 _EOF_
+```
 Install DevStack
 ```bash
+cd /vagrant/devstack
 ./stack.sh
 ```
 
 ### Install Magnum
+
 
 ### Start Magnum
 
