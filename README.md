@@ -92,7 +92,7 @@ sudo chmod +x /etc/network/if-pre-up.d/iptables_start
 Get Devstack
 ```bash
 cd /vagrant
-git clone https://git.openstack.org/openstack-dev/devstack
+git clone https://git.openstack.org/openstack-dev/devstack stable/kilo devstack/
 ```
 Setup the localrc
 ```bash
