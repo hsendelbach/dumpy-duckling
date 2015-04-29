@@ -162,7 +162,8 @@ git clone https://github.com/stackforge/python-magnumclient.git
 cd python-magnumclient
 tox -evenv -- echo 'done'
 ```
-Configuration
+### Configuration Magnum
+Magnum.conf
 ```bash
 sudo mkdir -p /etc/magnum/templates
 cd /etc/magnum/templates
