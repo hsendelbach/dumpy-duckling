@@ -5,6 +5,13 @@
 1. [Overview](#overview)
 2. [In a Nutshell](#Nutshell)
 3. [Usage - How to Start](#usage)
+    * [Install Vagrant](#install-vagrant)
+    * [Spin up a Trusty VM](#spin-up-a-trusty-vm)
+    * [Install DevStack](#install-devstack)
+    * [Install Magnum](#install_magnum)
+    * [Configure Magnum](#configure_magnum)
+    * [Start Magnum](#start_magnum)
+    * [Testing Magnum](#testing_magnum)
 4. [Limitations - OS compatibility, etc.](#limitations)
 5. [Contributors](#contributors)
 
@@ -14,15 +21,8 @@ Experiment with OpenStack Magnum (Kubernetes) inside a vagrant VM riding
 on the Mac (Virtualbox)
 
 ## Nutshell
-This project should allow us to accomplish the following:
+This project should allow us to spin up OpenStack Magnum on the Mac.
 
-  1) Install Vagrant
-  2) Spin up a Trusty VM
-  3) Install DevStack
-  4) Install Magnum (Server and Client)
-  5) Configure Magnum (Heat Kubernetes)
-  6) Start Magnum
-  7) Testing Magnum
 
 ## Usage
 
