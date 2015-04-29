@@ -35,7 +35,7 @@ This project should allow us to accomplish the following:
 ### Install Vagrant
 
 ```bash
-
+    add details here.
 ```
 ### Spin up Trusty VM
 Clone this repository
@@ -135,6 +135,11 @@ DEST=/opt/stack
 SCREEN_LOGDIR=$DEST/logs/screen
 _EOF_
 ```
+Add local.sh to run at the end of stack.sh
+```bash
+cat << _EOF_ | sudo tee -a /vagrant/devstack/localrc
+
+_EOF_
 Install DevStack
 ```bash
 ./stack.sh
