@@ -148,12 +148,123 @@ cd /vagrant/devstack
 ```
 
 ### Install Magnum
+Magnum Server
+```bash
+cd /vagrant
+git clone https://github.com/stackforge/magnum.git
+cd magnum
+tox -evenv -- echo 'done'
+```
+Magnum Client
+```bash
+cd /vagrant
+git clone https://github.com/stackforge/python-magnumclient.git
+cd python-magnumclient
+tox -evenv -- echo 'done'
+```
+Configuration
+```bash
+sudo mkdir -p /etc/magnum/templates
+cd /etc/magnum/templates
+sudo git clone https://github.com/larsks/heat-kubernetes.git
+cd /etc/magnum
 
+cat << _EOF_ | sudo tee -a /etc/magnum/magnum.conf
+[DEFAULT]
+debug = True
+verbose = True
+
+rabbit_userid=stackrabbit
+rabbit_password = stackqueue
+rabbit_hosts = 127.0.0.1
+rpc_backend = rabbit
+
+[database]
+connection = mysql://root:stackdb@localhost/magnum
+
+[keystone_authtoken]
+admin_password = openstack
+admin_user = nova
+admin_tenant_name = service
+identity_uri = http://127.0.0.1:35357
+
+auth_uri=http://127.0.0.1:5000/v2.0
+auth_protocol = http
+auth_port = 35357
+auth_host = 127.0.0.1
+_EOF_
+```
+Register image in Glance
+```bash
+cd /vagrant
+curl -O https://fedorapeople.org/groups/heat/kolla/fedora-21-atomic-2.qcow2
+source /vagrant/devstack/openrc admin admin
+glance image-create \
+  --disk-format qcow2 \
+  --container-format bare \
+  --is-public True \
+  --name fedora-21-atomic \
+  --file /vagrant/fedora-21-atomic-2.qcow2
+```
+
+Add keypair for Demo user
+```bash
+ssh-keygen
+source /vagrant/devstack/openrc demo demo
+nova keypair-add --pub-key ~/.ssh/id_rsa.pub default
+```
+
+Database work
+```bash
+mysql -h 127.0.0.1 -u root -pstackdb mysql <<EOF
+CREATE DATABASE IF NOT EXISTS magnum DEFAULT CHARACTER SET utf8;
+GRANT ALL PRIVILEGES ON magnum.* TO
+    'root'@'%' IDENTIFIED BY 'stackdb'
+EOF
+
+cd /vagrant/magnum
+source .tox/venv/bin/activate
+pip install mysql-python
+magnum-db-manage upgrade
+```
 
 ### Start Magnum
 
-### Testing Magnum
+magnum-api
+```bash
+cd /vagrant/magnum
+source .tox/venv/bin/activate
+magnum-api
+```
+magnum-conductor
+```bash
+cd /vagrant/magnum
+source .tox/venv/bin/activate
+magnum-conductor
+```
+python-magnumclient
+```bash
+cd /vagrant/python-magnumclient
+source .tox/venv/bin/activate
+magnum bay-list
+```
 
+### Testing Magnum
+Attemt to create a Bay
+```bash
+NIC_ID=$(neutron net-show public | awk '/ id /{print $4}')
+magnum baymodel-create --name default --keypair-id default \
+  --external-network-id $NIC_ID \
+  --image-id fedora-21-atomic \
+  --flavor-id m1.small --docker-volume-size 5
+
+magnum bay-create --name kbay --baymodel-id default
+```
+Create a Pod
+```bash
+magnum pod-create --bay-id 99cab72f-16a7-4564-8d73-d4497f51f557 \
+  --pod-file redis-master.json
+```
 
 ## Limitations
 
